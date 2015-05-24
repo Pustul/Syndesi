@@ -2,6 +2,12 @@ package ero2.identification;
 
 import org.json.simple.JSONObject;
 
+/**
+ * Represents a smartphone user part of the crowd
+ * 
+ * @author Blaise
+ *
+ */
 public class CrowdUser {
 	int id;
 	String ipaddr;

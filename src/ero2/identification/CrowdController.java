@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+/**
+ * Singleton crontroller to manage crowd users
+ * @author Blaise
+ *
+ */
 public class CrowdController {
 	private static CrowdController instance;
 	private ArrayList<CrowdUser> users;

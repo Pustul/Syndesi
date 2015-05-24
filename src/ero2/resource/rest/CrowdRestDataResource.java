@@ -14,6 +14,12 @@ import ero2.identification.CrowdController;
 import ero2.identification.CrowdData;
 import ero2.identification.CrowdUser;
 
+/**
+ * Rest resource to view / send data
+ * 
+ * @author Blaise
+ *
+ */
 public class CrowdRestDataResource extends ServerResource {
 	private CrowdController crowdController;
 

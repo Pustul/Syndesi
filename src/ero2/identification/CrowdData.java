@@ -2,6 +2,11 @@ package ero2.identification;
 
 import org.json.simple.JSONObject;
 
+/**
+ * Represents sensor data sent by crowd users
+ * @author Blaise
+ *
+ */
 public class CrowdData {
     private int accountId;
     private float data;
