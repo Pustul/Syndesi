@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/home/ali/Dropbox/unige/iot/telosbmote_testbed/syndesi_server/Syndesi_Server/lib/californium-0.12.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="/home/ali/Dropbox/unige/iot/telosbmote_testbed/syndesi_server/Syndesi_Server/lib/comm.jar"/>
-	<classpathentry kind="lib" path="/home/ali/Dropbox/unige/iot/telosbmote_testbed/syndesi_server/Syndesi_Server/lib/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/ali/Dropbox/unige/iot/telosbmote_testbed/syndesi_server/Syndesi_Server/lib/mysql-connector-java-3.0.17-ga-bin.jar"/>
-	<classpathentry kind="lib" path="/home/ali/Dropbox/unige/iot/telosbmote_testbed/syndesi_server/Syndesi_Server/lib/org.restlet.jar"/>
-	<classpathentry kind="lib" path="/home/ali/Dropbox/unige/iot/telosbmote_testbed/syndesi_server/Syndesi_Server/lib/RXTXcomm.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Blaise/AndroidStudioProjects/Syndesi/lib/californium-0.12.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Blaise/AndroidStudioProjects/Syndesi/lib/comm.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Blaise/AndroidStudioProjects/Syndesi/lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Blaise/AndroidStudioProjects/Syndesi/lib/mysql-connector-java-3.0.17-ga-bin.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Blaise/AndroidStudioProjects/Syndesi/lib/org.restlet.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Blaise/AndroidStudioProjects/Syndesi/lib/RXTXcomm.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
