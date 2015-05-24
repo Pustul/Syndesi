@@ -4,6 +4,8 @@ import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
+import ero2.resource.rest.CrowdRestDataResource;
+import ero2.resource.rest.CrowdRestUserResource;
 import ero2.resource.rest.ErO2RestMediatorResource;
 import ero2.resource.rest.ErO2RestMonitorResource;
 import ero2.resource.rest.ErO2RestProfileResource;
@@ -25,6 +27,10 @@ public class HTTPEndPointProxy extends Application {
         router.attach("/service/type/xml_rspec", ErO2RestXMLResource.class);
         // Returns only the values of sensors(luminance, temperature)
         router.attach("/sensorvalues", ErO2RestSensValues.class);
+        //Return last values of mobile sensors
+        router.attach("/crowddata", CrowdRestDataResource.class);
+        //Manage crowd users
+        router.attach("/crowdusers", CrowdRestUserResource.class);
         return router;
     }
 }
