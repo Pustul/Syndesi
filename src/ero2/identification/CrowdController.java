@@ -6,7 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * Singleton crontroller to manage crowd users
+ * Singleton controller to manage crowd users
  * @author Blaise
  *
  */
