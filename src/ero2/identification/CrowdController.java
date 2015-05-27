@@ -42,7 +42,7 @@ public class CrowdController {
 		JSONArray listData = new JSONArray();
 		for(CrowdUser user : users){
 			CrowdData lastData = user.getLastData();
-			if(lastData != null){
+			if(lastData != null && (System.currentTimeMillis()-lastData.getTimestamp()) < 300000 ){
 				listData.add(user.getLastData().getJSON());
 			}
 		}

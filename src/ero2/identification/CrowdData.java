@@ -1,5 +1,9 @@
 package ero2.identification;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+
 import org.json.simple.JSONObject;
 
 /**
@@ -11,11 +15,13 @@ public class CrowdData {
     private int accountId;
     private float data;
     private String dataType;
+    private Long timestamp;
     
     public CrowdData(int accountId, float data, String dataType){
     	this.accountId = accountId;
     	this.data = data;
     	this.dataType = dataType;
+    	this.timestamp = System.currentTimeMillis();
     }
     
 	@SuppressWarnings("unchecked")
@@ -24,6 +30,7 @@ public class CrowdData {
 		representation.put("accountId", accountId);
 		representation.put("value", data);
 		representation.put("type", dataType);
+		representation.put("timestamp", new SimpleDateFormat("dd.MM.yyyy-HH:mm:ss").format(new Date(timestamp)));
 		return representation;
 	}
 
@@ -49,6 +56,14 @@ public class CrowdData {
 
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
+	}
+
+	public Long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 }
