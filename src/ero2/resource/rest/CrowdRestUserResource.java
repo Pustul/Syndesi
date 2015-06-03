@@ -3,6 +3,7 @@ package ero2.resource.rest;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.restlet.representation.Representation;
@@ -37,7 +38,12 @@ public class CrowdRestUserResource extends ServerResource {
 	@Post()
 	public String addUser(String request) throws IOException {
 		JSONObject userJSON = (JSONObject) JSONValue.parse(request);
-		CrowdUser newUser = new CrowdUser(crowdController.getUsers().size(), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"));
+		JSONArray availableSensorsArray = (JSONArray) userJSON.get("mAvailableSensors");
+		ArrayList<String> availableSensors = new ArrayList<>();
+		for(int i = 0; i < availableSensorsArray.size(); i++){
+			availableSensors.add((String)availableSensorsArray.get(i));
+		}
+		CrowdUser newUser = new CrowdUser(crowdController.getUsers().size(), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"), ((Number)userJSON.get("mTargetLight")).intValue(), ((Number)userJSON.get("mTargetTemp")).intValue(), availableSensors);
 		crowdController.getUsers().add(newUser);
 		userJSON.replace("mId", newUser.getId());
 		return userJSON.toJSONString();
@@ -47,13 +53,21 @@ public class CrowdRestUserResource extends ServerResource {
 	@Put()
 	public String updateUser(String request) throws IOException {
 		JSONObject userJSON = (JSONObject) JSONValue.parse(request);
-		CrowdUser updatedUser = new CrowdUser(((Long)userJSON.get("mId")).intValue(), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"));
-		ArrayList<CrowdUser> users =crowdController.getUsers();
+		JSONArray availableSensorsArray = (JSONArray) userJSON.get("mAvailableSensors");
+		ArrayList<String> availableSensors = new ArrayList<>();
+		for(int i = 0; i < availableSensorsArray.size(); i++){
+			availableSensors.add((String)availableSensorsArray.get(i));
+		}
+		CrowdUser updatedUser = new CrowdUser(((Number)userJSON.get("mId")).intValue(), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"), ((Number)userJSON.get("mTargetLight")).intValue(), ((Number)userJSON.get("mTargetTemp")).intValue(), availableSensors);
+		ArrayList<CrowdUser> users = crowdController.getUsers();
 		if(users.contains(updatedUser)){
 			CrowdUser oldUser = users.get(updatedUser.getId());
 			oldUser.setName(updatedUser.getName());
 			oldUser.setSurname(updatedUser.getSurname());
 			oldUser.setOffice(updatedUser.getOffice());
+			oldUser.setTargetLight(updatedUser.getTargetLight());
+			oldUser.setTargetTemp(updatedUser.getTargetTemp());
+			oldUser.setAvailableSensors(updatedUser.getAvailableSensors());
 		}else{
 			updatedUser.setId(users.size());
 			users.add(updatedUser);

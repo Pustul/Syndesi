@@ -1,5 +1,8 @@
 package ero2.identification;
 
+import java.util.ArrayList;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -15,15 +18,21 @@ public class CrowdUser {
 	String name;
 	String surname;
 	String office;
+	int targetLight;
+	int targetTemp;
+	ArrayList<String> availableSensors;
 	CrowdData lastData;
 	
-	public CrowdUser(int id, String ipaddr, String agent, String name, String surname, String office){
+	public CrowdUser(int id, String ipaddr, String agent, String name, String surname, String office, int targetLight, int targetTemp, ArrayList<String> availableSensors){
 		this.id = id;
 		this.ipaddr = ipaddr;
 		this.agent = agent;
 		this.name = name;
 		this.surname = surname;
 		this.office = office;
+		this.targetLight = targetLight;
+		this.targetTemp = targetTemp;
+		this.availableSensors = availableSensors;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -35,6 +44,11 @@ public class CrowdUser {
 		representation.put("name",name);
 		representation.put("surname",surname);
 		representation.put("office",office);
+		representation.put("target light",targetLight);
+		representation.put("target temp",targetTemp);
+		JSONArray availableSensorsArray = new JSONArray();
+		availableSensorsArray.addAll(availableSensors);
+		representation.put("available sensors",availableSensorsArray);
 		return representation;
 	}
 
@@ -76,6 +90,30 @@ public class CrowdUser {
 		this.office = office;
 	}
 
+	public int getTargetLight() {
+		return targetLight;
+	}
+
+	public void setTargetLight(int targetLight) {
+		this.targetLight = targetLight;
+	}
+
+	public int getTargetTemp() {
+		return targetTemp;
+	}
+
+	public void setTargetTemp(int targetTemp) {
+		this.targetTemp = targetTemp;
+	}
+	
+	public ArrayList<String> getAvailableSensors() {
+		return availableSensors;
+	}
+
+	public void setAvailableSensors(ArrayList<String> availableSensors) {
+		this.availableSensors = availableSensors;
+	}
+
 	public CrowdData getLastData() {
 		return lastData;
 	}
@@ -83,7 +121,6 @@ public class CrowdUser {
 	public void setLastData(CrowdData lastData) {
 		this.lastData = lastData;
 	}
-
 
 	@Override
 	public int hashCode() {
