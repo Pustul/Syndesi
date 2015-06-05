@@ -56,17 +56,28 @@ public class CrowdNodesManager extends TimerTask{
 	}
 	
 	public void regulateLight(CrowdData newLightData){
+		long lastChangeTs;
 		if(newLightData.getValue() < CrowdController.getInstance().getUsers().get(newLightData.getAccountId()).getTargetLight()){
 			for(CrowdNode node : nodesList){
 				if(node.getmType() == NodeType.bulb){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-					if(System.currentTimeMillis()-node.getLastChangeTS() < 300000){
+					if(node.getLastChangeTS() == null){
+						lastChangeTs = 0;
+					}else{
+						lastChangeTs = node.getLastChangeTS();
+					}
+					if(System.currentTimeMillis()-lastChangeTs > 300000){
 						this.sendMediateRequest(node, "on");
 					}
 				}
 				if(node.getmType() == NodeType.curtain){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-					if(System.currentTimeMillis()-node.getLastChangeTS() < 300000){
+					if(node.getLastChangeTS() == null){
+						lastChangeTs = 0;
+					}else{
+						lastChangeTs = node.getLastChangeTS();
+					}
+					if(System.currentTimeMillis()-lastChangeTs > 300000){
 						this.sendMediateRequest(node, "up");
 					}
 				}
@@ -75,7 +86,12 @@ public class CrowdNodesManager extends TimerTask{
 			for(CrowdNode node : nodesList){
 				if(node.getmType() == NodeType.bulb){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-					if(System.currentTimeMillis()-node.getLastChangeTS() < 300000){
+					if(node.getLastChangeTS() == null){
+						lastChangeTs = 0;
+					}else{
+						lastChangeTs = node.getLastChangeTS();
+					}
+					if(System.currentTimeMillis()-lastChangeTs > 300000){
 						this.sendMediateRequest(node, "off");
 					}
 				}
@@ -83,7 +99,12 @@ public class CrowdNodesManager extends TimerTask{
 				if(newLightData.getValue() > 30000){
 					if(node.getmType() == NodeType.curtain){
 						//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-						if(System.currentTimeMillis()-node.getLastChangeTS() < 300000){
+						if(node.getLastChangeTS() == null){
+							lastChangeTs = 0;
+						}else{
+							lastChangeTs = node.getLastChangeTS();
+						}
+						if(System.currentTimeMillis()-lastChangeTs > 300000){
 							this.sendMediateRequest(node, "down");
 						}
 					}
@@ -92,18 +113,29 @@ public class CrowdNodesManager extends TimerTask{
 		}
 	}
 	
-	public void regulateTemp(CrowdData newLightData){
-		if(newLightData.getValue() < CrowdController.getInstance().getUsers().get(newLightData.getAccountId()).getTargetTemp()){
+	public void regulateTemp(CrowdData newTempData){
+		long lastChangeTs;
+		if(newTempData.getValue() < CrowdController.getInstance().getUsers().get(newTempData.getAccountId()).getTargetTemp()){
 			for(CrowdNode node : nodesList){
 				if(node.getmType() == NodeType.fan){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-					if(System.currentTimeMillis()-node.getLastChangeTS() < 300000){
+					if(node.getLastChangeTS() == null){
+						lastChangeTs = 0;
+					}else{
+						lastChangeTs = node.getLastChangeTS();
+					}
+					if(System.currentTimeMillis()-lastChangeTs > 300000){
 						this.sendMediateRequest(node,"off");
 					}
 				}
 				if(node.getmType() == NodeType.heater){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-					if(System.currentTimeMillis()-node.getLastChangeTS() < 300000){
+					if(node.getLastChangeTS() == null){
+						lastChangeTs = 0;
+					}else{
+						lastChangeTs = node.getLastChangeTS();
+					}
+					if(System.currentTimeMillis()-lastChangeTs > 300000){
 						this.sendMediateRequest(node, "on");
 					}
 				}
@@ -112,13 +144,23 @@ public class CrowdNodesManager extends TimerTask{
 			for(CrowdNode node : nodesList){
 				if(node.getmType() == NodeType.fan){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-					if(System.currentTimeMillis()-node.getLastChangeTS() < 300000){
+					if(node.getLastChangeTS() == null){
+						lastChangeTs = 0;
+					}else{
+						lastChangeTs = node.getLastChangeTS();
+					}
+					if(System.currentTimeMillis()-lastChangeTs > 300000){
 						this.sendMediateRequest(node, "on");
 					}
 				}
 				if(node.getmType() == NodeType.heater){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-					if(System.currentTimeMillis()-node.getLastChangeTS() < 300000){
+					if(node.getLastChangeTS() == null){
+						lastChangeTs = 0;
+					}else{
+						lastChangeTs = node.getLastChangeTS();
+					}
+					if(System.currentTimeMillis()-lastChangeTs > 300000){
 						this.sendMediateRequest(node, "off");
 					}
 				}
