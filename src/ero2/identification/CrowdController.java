@@ -75,11 +75,11 @@ public class CrowdController {
 			user.getLastDatas().add(lastData);
 		}
 		//Light and temperature automation
-		if(lastData.getDataType().equals("LIGHT")){
+		/*if(lastData.getDataType().equals("LIGHT")){
 			nodesManager.regulateLight(lastData);
 		}else if(lastData.getDataType().equals("TEMPERATURE")){
 			nodesManager.regulateTemp(lastData);
-		}
+		}*/
 	}
 	
 	public ArrayList<CrowdUser> getUsers() {
