@@ -20,8 +20,9 @@ public class CrowdUser {
 	String office;
 	int targetLight;
 	int targetTemp;
+	Long crowdPoints;
 	ArrayList<String> availableSensors;
-	CrowdData lastData;
+	ArrayList<CrowdData> lastDatas;
 	
 	public CrowdUser(int id, String ipaddr, String agent, String name, String surname, String office, int targetLight, int targetTemp, ArrayList<String> availableSensors){
 		this.id = id;
@@ -33,6 +34,8 @@ public class CrowdUser {
 		this.targetLight = targetLight;
 		this.targetTemp = targetTemp;
 		this.availableSensors = availableSensors;
+		this.crowdPoints = (long) 0;
+		this.lastDatas = new ArrayList<>();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -46,6 +49,7 @@ public class CrowdUser {
 		representation.put("office",office);
 		representation.put("target light",targetLight);
 		representation.put("target temp",targetTemp);
+		representation.put("crowd points",crowdPoints);
 		JSONArray availableSensorsArray = new JSONArray();
 		availableSensorsArray.addAll(availableSensors);
 		representation.put("available sensors",availableSensorsArray);
@@ -114,12 +118,24 @@ public class CrowdUser {
 		this.availableSensors = availableSensors;
 	}
 
-	public CrowdData getLastData() {
-		return lastData;
+	public ArrayList<CrowdData> getLastDatas() {
+		return lastDatas;
 	}
 
-	public void setLastData(CrowdData lastData) {
-		this.lastData = lastData;
+	public void setLastDatas(ArrayList<CrowdData> lastData) {
+		this.lastDatas = lastData;
+	}
+	
+	public Long getCrowdPoints() {
+		return crowdPoints;
+	}
+
+	public void setCrowdPoints(Long crowdPoints) {
+		this.crowdPoints = crowdPoints;
+	}
+
+	public void incrementCrowPoints(){
+		this.crowdPoints++;
 	}
 
 	@Override

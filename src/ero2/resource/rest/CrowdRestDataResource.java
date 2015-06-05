@@ -40,7 +40,7 @@ public class CrowdRestDataResource extends ServerResource {
 		System.out.println(dataJSON.toJSONString());
 		int accountId = ((Long) dataJSON.get("mAccountId")).intValue();
 		CrowdData newData = new CrowdData(accountId, ((Number) dataJSON.get("mData")).floatValue(), (String)dataJSON.get("mDataType"));
-		crowdController.getUsers().get(accountId).setLastData(newData);;
+		crowdController.setLastData(accountId, newData);;
 		return dataJSON.toJSONString();
 	}
 	

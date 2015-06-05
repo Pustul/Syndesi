@@ -13,13 +13,13 @@ import org.json.simple.JSONObject;
  */
 public class CrowdData {
     private int accountId;
-    private float data;
+    private float value;
     private String dataType;
     private Long timestamp;
     
     public CrowdData(int accountId, float data, String dataType){
     	this.accountId = accountId;
-    	this.data = data;
+    	this.value = data;
     	this.dataType = dataType;
     	this.timestamp = System.currentTimeMillis();
     }
@@ -28,7 +28,7 @@ public class CrowdData {
 	public JSONObject getJSON(){
 		JSONObject representation = new JSONObject();
 		representation.put("accountId", accountId);
-		representation.put("value", data);
+		representation.put("value", value);
 		representation.put("type", dataType);
 		representation.put("timestamp", new SimpleDateFormat("dd.MM.yyyy-HH:mm:ss").format(new Date(timestamp)));
 		return representation;
@@ -42,12 +42,12 @@ public class CrowdData {
 		this.accountId = accountId;
 	}
 
-	public float getData() {
-		return data;
+	public float getValue() {
+		return value;
 	}
 
-	public void setData(float data) {
-		this.data = data;
+	public void setValue(float value) {
+		this.value = value;
 	}
 
 	public String getDataType() {

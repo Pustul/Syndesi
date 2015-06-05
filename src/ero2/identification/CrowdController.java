@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import ero2.resource.rest.CrowdNodesManager;
+
 /**
  * Singleton controller to manage crowd users
  * @author Blaise
@@ -12,10 +14,13 @@ import org.json.simple.JSONObject;
  */
 public class CrowdController {
 	private static CrowdController instance;
+	private static CrowdNodesManager nodesManager;
 	private ArrayList<CrowdUser> users;
 	
 	public CrowdController(){
 		this.users = new ArrayList<CrowdUser>();
+		//TODO: CHANGE TESTING URL
+		this.nodesManager = CrowdNodesManager.getInstance("http://129.194.70.52:8111/ero2proxy");
 	}
 	
 	public static synchronized CrowdController getInstance(){
@@ -39,15 +44,42 @@ public class CrowdController {
 	@SuppressWarnings("unchecked")
 	public JSONObject getDataJSON(){
 		JSONObject representation = new JSONObject();
-		JSONArray listData = new JSONArray();
+		JSONObject listData = new JSONObject();
+		JSONArray listDataArray = new JSONArray();
 		for(CrowdUser user : users){
-			CrowdData lastData = user.getLastData();
-			if(lastData != null && (System.currentTimeMillis()-lastData.getTimestamp()) < 300000 ){
-				listData.add(user.getLastData().getJSON());
+			JSONArray listDataUser = new JSONArray();
+			for(CrowdData data : user.getLastDatas()){
+				if((System.currentTimeMillis()-data.getTimestamp()) < 300000 ){
+					listDataUser.add(data.getJSON());
+				}
+			}
+			listData.put(user.getId(),listDataUser);
+			listDataArray.add(listData);
+		}
+		representation.put("data", listDataArray);
+		return representation;
+	}
+	
+	public void setLastData(int userId, CrowdData lastData){
+		CrowdUser user = this.getUsers().get(userId);
+		user.incrementCrowPoints();
+		Boolean dataExist = false;
+		for(CrowdData data : user.getLastDatas()){
+			if(data.getDataType().equals(lastData.getDataType())){
+				data.setValue(lastData.getValue());
+				dataExist = true;
+				break;
 			}
 		}
-		representation.put("data", listData);
-		return representation;
+		if(!dataExist){
+			user.getLastDatas().add(lastData);
+		}
+		//Light and temperature automation
+		/*if(lastData.getDataType().equals("LIGHT")){
+			nodesManager.regulateLight();
+		}else if(lastData.getDataType().equals("TEMPERATURE")){
+			nodesManager.regulateTemp();
+		}*/
 	}
 	
 	public ArrayList<CrowdUser> getUsers() {
