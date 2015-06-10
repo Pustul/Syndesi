@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
  *
  */
 public class CrowdUser {
-	int id;
+	String id;
 	String ipaddr;
 	String agent;
 	String name;
@@ -24,7 +24,7 @@ public class CrowdUser {
 	ArrayList<String> availableSensors;
 	ArrayList<CrowdData> lastDatas;
 	
-	public CrowdUser(int id, String ipaddr, String agent, String name, String surname, String office, int targetLight, int targetTemp, ArrayList<String> availableSensors){
+	public CrowdUser(String id, String ipaddr, String agent, String name, String surname, String office, int targetLight, int targetTemp, ArrayList<String> availableSensors){
 		this.id = id;
 		this.ipaddr = ipaddr;
 		this.agent = agent;
@@ -56,12 +56,12 @@ public class CrowdUser {
 		return representation;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -137,15 +137,6 @@ public class CrowdUser {
 	public void incrementCrowPoints(){
 		this.crowdPoints++;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
-	}
-
 
 	@Override
 	public boolean equals(Object obj) {

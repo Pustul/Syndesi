@@ -57,7 +57,7 @@ public class CrowdNodesManager extends TimerTask{
 	
 	public void regulateLight(CrowdData newLightData){
 		long lastChangeTs;
-		if(newLightData.getValue() < CrowdController.getInstance().getUsers().get(newLightData.getAccountId()).getTargetLight()){
+		if(newLightData.getValue() < CrowdController.getInstance().getUser(newLightData.getAccountId()).getTargetLight()){
 			for(CrowdNode node : nodesList){
 				if(node.getmType() == NodeType.bulb){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
@@ -115,7 +115,7 @@ public class CrowdNodesManager extends TimerTask{
 	
 	public void regulateTemp(CrowdData newTempData){
 		long lastChangeTs;
-		if(newTempData.getValue() < CrowdController.getInstance().getUsers().get(newTempData.getAccountId()).getTargetTemp()){
+		if(newTempData.getValue() < CrowdController.getInstance().getUser(newTempData.getAccountId()).getTargetTemp()){
 			for(CrowdNode node : nodesList){
 				if(node.getmType() == NodeType.fan){
 					//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users

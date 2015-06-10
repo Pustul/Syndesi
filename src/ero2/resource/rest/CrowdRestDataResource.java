@@ -37,10 +37,8 @@ public class CrowdRestDataResource extends ServerResource {
 	@Post()
 	public String addData(String request) throws IOException, ParseException {
 		JSONObject dataJSON = (JSONObject) JSONValue.parse(request);
-		System.out.println(dataJSON.toJSONString());
-		int accountId = ((Long) dataJSON.get("mAccountId")).intValue();
-		CrowdData newData = new CrowdData(accountId, ((Number) dataJSON.get("mData")).floatValue(), (String)dataJSON.get("mDataType"));
-		crowdController.setLastData(accountId, newData);;
+		CrowdData newData = new CrowdData((String) dataJSON.get("mAccountId"), ((Number) dataJSON.get("mData")).floatValue(), (String)dataJSON.get("mDataType"));
+		crowdController.setLastData(newData);;
 		return dataJSON.toJSONString();
 	}
 	

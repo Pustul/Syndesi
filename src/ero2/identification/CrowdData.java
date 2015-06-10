@@ -12,12 +12,12 @@ import org.json.simple.JSONObject;
  *
  */
 public class CrowdData {
-    private int accountId;
+    private String accountId;
     private float value;
     private String dataType;
     private Long timestamp;
     
-    public CrowdData(int accountId, float data, String dataType){
+    public CrowdData(String accountId, float data, String dataType){
     	this.accountId = accountId;
     	this.value = data;
     	this.dataType = dataType;
@@ -34,11 +34,11 @@ public class CrowdData {
 		return representation;
 	}
 
-	public int getAccountId() {
+	public String getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(int accountId) {
+	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
 

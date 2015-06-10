@@ -60,8 +60,8 @@ public class CrowdController {
 		return representation;
 	}
 	
-	public void setLastData(int userId, CrowdData lastData){
-		CrowdUser user = this.getUsers().get(userId);
+	public void setLastData(CrowdData lastData){
+		CrowdUser user = this.getUser(lastData.getAccountId());
 		user.incrementCrowPoints();
 		Boolean dataExist = false;
 		for(CrowdData data : user.getLastDatas()){
@@ -80,6 +80,15 @@ public class CrowdController {
 		}else if(lastData.getDataType().equals("TEMPERATURE")){
 			nodesManager.regulateTemp(lastData);
 		}*/
+	}
+	
+	public CrowdUser getUser(String userId){
+		for(CrowdUser user : this.users){
+			if(user.getId().equals(userId)){
+				return user;
+			}
+		}
+		return null;
 	}
 	
 	public ArrayList<CrowdUser> getUsers() {

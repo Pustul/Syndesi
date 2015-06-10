@@ -43,9 +43,8 @@ public class CrowdRestUserResource extends ServerResource {
 		for(int i = 0; i < availableSensorsArray.size(); i++){
 			availableSensors.add((String)availableSensorsArray.get(i));
 		}
-		CrowdUser newUser = new CrowdUser(crowdController.getUsers().size(), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"), ((Number)userJSON.get("mTargetLight")).intValue(), ((Number)userJSON.get("mTargetTemp")).intValue(), availableSensors);
+		CrowdUser newUser = new CrowdUser((String)userJSON.get("mId"), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"), ((Number)userJSON.get("mTargetLight")).intValue(), ((Number)userJSON.get("mTargetTemp")).intValue(), availableSensors);
 		crowdController.getUsers().add(newUser);
-		userJSON.replace("mId", newUser.getId());
 		return userJSON.toJSONString();
 	}
 	
@@ -58,10 +57,10 @@ public class CrowdRestUserResource extends ServerResource {
 		for(int i = 0; i < availableSensorsArray.size(); i++){
 			availableSensors.add((String)availableSensorsArray.get(i));
 		}
-		CrowdUser updatedUser = new CrowdUser(((Number)userJSON.get("mId")).intValue(), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"), ((Number)userJSON.get("mTargetLight")).intValue(), ((Number)userJSON.get("mTargetTemp")).intValue(), availableSensors);
+		CrowdUser updatedUser = new CrowdUser((String)userJSON.get("mId"), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"), ((Number)userJSON.get("mTargetLight")).intValue(), ((Number)userJSON.get("mTargetTemp")).intValue(), availableSensors);
 		ArrayList<CrowdUser> users = crowdController.getUsers();
 		if(users.contains(updatedUser)){
-			CrowdUser oldUser = users.get(updatedUser.getId());
+			CrowdUser oldUser = users.get(users.indexOf(updatedUser));
 			oldUser.setName(updatedUser.getName());
 			oldUser.setSurname(updatedUser.getSurname());
 			oldUser.setOffice(updatedUser.getOffice());
@@ -69,9 +68,7 @@ public class CrowdRestUserResource extends ServerResource {
 			oldUser.setTargetTemp(updatedUser.getTargetTemp());
 			oldUser.setAvailableSensors(updatedUser.getAvailableSensors());
 		}else{
-			updatedUser.setId(users.size());
 			users.add(updatedUser);
-			userJSON.replace("mId", updatedUser.getId());
 		}
 		return userJSON.toJSONString();
 	}
