@@ -4,6 +4,7 @@ public enum NodeType {
     bulb,
     light,
     curtain{
+    	@Override
         public String getStatus(String status){
             if(status.equals("up")){
                 return "up";
@@ -11,6 +12,7 @@ public enum NodeType {
                 return "down";
             }
         }
+    	@Override
         public String getToggleStatus(String status){
             if(status.equals("up")){
                 return "down";

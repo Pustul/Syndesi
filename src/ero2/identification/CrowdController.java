@@ -67,6 +67,7 @@ public class CrowdController {
 		for(CrowdData data : user.getLastDatas()){
 			if(data.getDataType().equals(lastData.getDataType())){
 				data.setValue(lastData.getValue());
+				data.setTimestamp(System.currentTimeMillis());
 				dataExist = true;
 				break;
 			}
