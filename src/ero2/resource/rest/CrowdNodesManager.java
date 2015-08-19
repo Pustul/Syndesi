@@ -36,18 +36,17 @@ import ero2.identification.NodeType;
 public class CrowdNodesManager extends TimerTask{
 	private static CrowdNodesManager instance;
 	private ArrayList<CrowdNode> nodesList;
-	private String url;
+	private String url = "http://129.194.70.52:8111/ero2proxy";
 	
-	public CrowdNodesManager(String url){
-		this.url = url;
+	public CrowdNodesManager(){
 		this.nodesList = new ArrayList<>();
 		//Update the nodes list every 30 minutes
 		new Timer().schedule(this, 0, 1800000);
 	}
 	
-	public static synchronized CrowdNodesManager getInstance(String url){
+	public static synchronized CrowdNodesManager getInstance(){
 		if(instance == null){
-			instance = new CrowdNodesManager(url);
+			instance = new CrowdNodesManager();
 		}
 		return instance;
 	}
@@ -61,7 +60,7 @@ public class CrowdNodesManager extends TimerTask{
 	
 	public void regulateLight(CrowdData newLightData){
 		long lastChangeTs;
-		if(newLightData.getValue() < CrowdController.getInstance().getRoomAveragePref(newLightData)){
+		if((newLightData.getValue()+getRoomAverageValue(newLightData))/2 < CrowdController.getInstance().getRoomAveragePref(newLightData)){
 			for(CrowdNode node : nodesList){
 				if(node.getmNID().substring(0, 2).equals(CrowdController.getInstance().getUser(newLightData.getAccountId()).getOffice())){
 					if(node.getmType() == NodeType.bulb){
@@ -127,7 +126,7 @@ public class CrowdNodesManager extends TimerTask{
 	
 	public void regulateTemp(CrowdData newTempData){
 		long lastChangeTs;
-		if(newTempData.getValue() < CrowdController.getInstance().getRoomAveragePref(newTempData)){
+		if((newTempData.getValue()+getRoomAverageValue(newTempData))/2 < CrowdController.getInstance().getRoomAveragePref(newTempData)){
 			for(CrowdNode node : nodesList){
 				if(node.getmNID().substring(0, 2).equals(CrowdController.getInstance().getUser(newTempData.getAccountId()).getOffice())){
 					if(node.getmType() == NodeType.fan){
@@ -301,8 +300,24 @@ public class CrowdNodesManager extends TimerTask{
 			JSONObject nodeJSON = (JSONObject)node;
 			CrowdNode crowdNode = getNode((String)nodeJSON.get("node"));
 			crowdNode.setLuminance(Float.valueOf((String)nodeJSON.get("luminance")));
-			crowdNode.setLuminance(Float.valueOf((String)nodeJSON.get("luminance")));
+			crowdNode.setTemperature(Float.valueOf((String)nodeJSON.get("temperature")));
 		}
+	}
+	
+	public float getRoomAverageValue(CrowdData data){
+		float averageValue = 0;
+		int nbNodes = 0;
+		for(CrowdNode node : nodesList){
+			if(node.getmNID().substring(0, 2).equals(CrowdController.getInstance().getUser(data.getAccountId()).getOffice())){
+				if(data.getDataType().equals("LIGHT")){
+					averageValue += node.getLuminance();
+				}else if(data.getDataType().equals("TEMPERATURE")){
+					averageValue += node.getTemperature();
+				}
+				nbNodes++;
+			}
+		}
+		return averageValue/nbNodes;
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -34,12 +34,12 @@ public class CrowdRestDataResource extends ServerResource {
 		if(((String)getRequest().getAttributes().get("type")) != null && ((String)getRequest().getAttributes().get("type")).equals("mobile")){
 			return crowdController.getDataJSON().toJSONString();
 		}else if(((String)getRequest().getAttributes().get("type")) != null && ((String)getRequest().getAttributes().get("type")).equals("fixed")){
-			return CrowdNodesManager.getInstance("http://129.194.70.52:8111/ero2proxy").getNodesJSON().toJSONString();
+			return CrowdNodesManager.getInstance().getNodesJSON().toJSONString();
 		}else{
 			JSONObject dataJSON = new JSONObject();
 			JSONArray dataArray = new JSONArray();
 			dataArray.add(crowdController.getDataJSON());
-			dataArray.add(CrowdNodesManager.getInstance("http://129.194.70.52:8111/ero2proxy").getNodesJSON());
+			dataArray.add(CrowdNodesManager.getInstance().getNodesJSON());
 			dataJSON.put("data", dataArray);
 			return dataJSON.toJSONString();
 		}

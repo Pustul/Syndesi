@@ -20,7 +20,7 @@ public class CrowdController {
 	public CrowdController(){
 		this.users = new ArrayList<CrowdUser>();
 		//TODO: CHANGE TESTING URL
-		this.nodesManager = CrowdNodesManager.getInstance("http://129.194.70.52:8111/ero2proxy");
+		this.nodesManager = CrowdNodesManager.getInstance();
 	}
 	
 	public static synchronized CrowdController getInstance(){
