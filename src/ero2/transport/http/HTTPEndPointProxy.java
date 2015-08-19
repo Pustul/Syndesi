@@ -29,6 +29,7 @@ public class HTTPEndPointProxy extends Application {
         router.attach("/sensorvalues", ErO2RestSensValues.class);
         //Return last values of mobile sensors
         router.attach("/crowddata", CrowdRestDataResource.class);
+        router.attach("/crowddata/{type}", CrowdRestDataResource.class);
         //Manage crowd users
         router.attach("/crowdusers", CrowdRestUserResource.class);
         return router;

@@ -56,7 +56,7 @@ public class CrowdController {
 			listData.put(user.getId(),listDataUser);
 			listDataArray.add(listData);
 		}
-		representation.put("data", listDataArray);
+		representation.put("mobile", listDataArray);
 		return representation;
 	}
 	
@@ -76,11 +76,43 @@ public class CrowdController {
 			user.getLastDatas().add(lastData);
 		}
 		//Light and temperature automation
-		/*if(lastData.getDataType().equals("LIGHT")){
+		if(lastData.getDataType().equals("LIGHT")){
 			nodesManager.regulateLight(lastData);
 		}else if(lastData.getDataType().equals("TEMPERATURE")){
 			nodesManager.regulateTemp(lastData);
-		}*/
+		}
+	}
+	
+	public float getRoomAveragePref(CrowdData data){
+		float averagePref = 0;
+		int nbUsers = 0;
+		for(CrowdUser user : users){
+			if(user.getOffice().equals(getUser(data.getAccountId()).getOffice())){
+				if(data.getDataType().equals("LIGHT")){
+					averagePref += user.getTargetLight();
+				}else if(data.getDataType().equals("TEMPERATURE")){
+					averagePref += user.getTargetTemp();
+				}
+				nbUsers++;
+			}
+		}
+		return averagePref/nbUsers;
+	}
+	
+	public float getWeightedRoomAveragePref(CrowdData data){
+		float averagePref = 0;
+		int nbCrowdPoints = 0;
+		for(CrowdUser user : users){
+			if(user.getOffice().equals(getUser(data.getAccountId()).getOffice())){
+				if(data.getDataType().equals("LIGHT")){
+					averagePref += user.getTargetLight() * user.getCrowdPoints();
+				}else if(data.getDataType().equals("TEMPERATURE")){
+					averagePref += user.getTargetTemp() * user.getCrowdPoints();
+				}
+				nbCrowdPoints += user.getCrowdPoints();
+			}
+		}
+		return averagePref/nbCrowdPoints;
 	}
 	
 	public CrowdUser getUser(String userId){

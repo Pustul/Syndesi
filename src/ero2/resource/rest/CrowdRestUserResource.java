@@ -28,7 +28,7 @@ public class CrowdRestUserResource extends ServerResource {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Get()
+	@Get("json")
 	public String getUsers() {
 		JSONObject listUsers = crowdController.getJSON();
 		return listUsers.toJSONString();

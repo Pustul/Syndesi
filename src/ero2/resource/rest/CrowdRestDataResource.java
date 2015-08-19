@@ -2,6 +2,7 @@ package ero2.resource.rest;
 
 import java.io.IOException;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
@@ -28,10 +29,20 @@ public class CrowdRestDataResource extends ServerResource {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Get()
+	@Get("json")
 	public String getData() {
-		JSONObject dataJSON = crowdController.getDataJSON();
-		return dataJSON.toJSONString();
+		if(((String)getRequest().getAttributes().get("type")) != null && ((String)getRequest().getAttributes().get("type")).equals("mobile")){
+			return crowdController.getDataJSON().toJSONString();
+		}else if(((String)getRequest().getAttributes().get("type")) != null && ((String)getRequest().getAttributes().get("type")).equals("fixed")){
+			return CrowdNodesManager.getInstance("http://129.194.70.52:8111/ero2proxy").getNodesJSON().toJSONString();
+		}else{
+			JSONObject dataJSON = new JSONObject();
+			JSONArray dataArray = new JSONArray();
+			dataArray.add(crowdController.getDataJSON());
+			dataArray.add(CrowdNodesManager.getInstance("http://129.194.70.52:8111/ero2proxy").getNodesJSON());
+			dataJSON.put("data", dataArray);
+			return dataJSON.toJSONString();
+		}
 	}
 	
 	@Post()
