@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import ero2.resource.rest.CrowdNodesManager;
-
 /**
  * Singleton controller to manage crowd users
  * @author Blaise

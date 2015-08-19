@@ -1,4 +1,4 @@
-package ero2.resource.rest;
+package ero2.identification;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,12 +26,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import ero2.identification.CrowdController;
-import ero2.identification.CrowdData;
-import ero2.identification.CrowdNode;
-import ero2.identification.CrowdUser;
-import ero2.identification.NodeType;
 
 public class CrowdNodesManager extends TimerTask{
 	private static CrowdNodesManager instance;

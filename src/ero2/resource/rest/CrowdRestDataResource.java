@@ -13,6 +13,7 @@ import org.restlet.resource.ServerResource;
 
 import ero2.identification.CrowdController;
 import ero2.identification.CrowdData;
+import ero2.identification.CrowdNodesManager;
 import ero2.identification.CrowdUser;
 
 /**
