@@ -29,10 +29,12 @@ import org.xml.sax.SAXException;
 
 public class CrowdNodesManager extends TimerTask{
 	private static CrowdNodesManager instance;
+	private static CrowdNodesRegulator nodesRegulator;
 	private ArrayList<CrowdNode> nodesList;
 	private String url = "http://129.194.70.52:8111/ero2proxy";
 	
 	public CrowdNodesManager(){
+		this.nodesRegulator = CrowdNodesRegulator.getInstance(this);
 		this.nodesList = new ArrayList<>();
 		//Update the nodes list every 30 minutes
 		new Timer().schedule(this, 0, 1800000);
@@ -45,6 +47,9 @@ public class CrowdNodesManager extends TimerTask{
 		return instance;
 	}
 	
+	/**
+	 * The task to execute, populate the nodes list with nodes reporting data from the server
+	 */
 	@Override
 	public void run() {
 		this.nodesList.clear();
@@ -52,135 +57,11 @@ public class CrowdNodesManager extends TimerTask{
 		this.fetchValues();
 	}
 	
-	public void regulateLight(CrowdData newLightData){
-		long lastChangeTs;
-		if((newLightData.getValue()+getRoomAverageValue(newLightData))/2 < CrowdController.getInstance().getRoomAveragePref(newLightData)){
-			for(CrowdNode node : nodesList){
-				if(node.getmNID().substring(0, 2).equals(CrowdController.getInstance().getUser(newLightData.getAccountId()).getOffice())){
-					if(node.getmType() == NodeType.bulb){
-						//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-						if(node.getLastChangeTS() == null){
-							lastChangeTs = 0;
-						}else{
-							lastChangeTs = node.getLastChangeTS();
-						}
-						if(System.currentTimeMillis()-lastChangeTs > 300000){
-							node.setLastChangeTS(System.currentTimeMillis());
-							this.sendMediateRequest(node, "on");
-						}
-					}
-					if(node.getmType() == NodeType.curtain){
-						//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-						if(node.getLastChangeTS() == null){
-							lastChangeTs = 0;
-						}else{
-							lastChangeTs = node.getLastChangeTS();
-						}
-						if(System.currentTimeMillis()-lastChangeTs > 300000){
-							node.setLastChangeTS(System.currentTimeMillis());
-							this.sendMediateRequest(node, "up");
-						}
-					}
-				}
-			}
-		}else{
-			for(CrowdNode node : nodesList){
-				if(node.getmNID().substring(0, 2).equals(CrowdController.getInstance().getUser(newLightData.getAccountId()).getOffice())){
-					if(node.getmType() == NodeType.bulb){
-						//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-						if(node.getLastChangeTS() == null){
-							lastChangeTs = 0;
-						}else{
-							lastChangeTs = node.getLastChangeTS();
-						}
-						if(System.currentTimeMillis()-lastChangeTs > 300000){
-							node.setLastChangeTS(System.currentTimeMillis());
-							this.sendMediateRequest(node, "off");
-						}
-					}
-					//If direct sunlight -> close curtains
-					if(newLightData.getValue() > 30000){
-						if(node.getmType() == NodeType.curtain){
-							//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-							if(node.getLastChangeTS() == null){
-								lastChangeTs = 0;
-							}else{
-								lastChangeTs = node.getLastChangeTS();
-							}
-							if(System.currentTimeMillis()-lastChangeTs > 300000){
-								node.setLastChangeTS(System.currentTimeMillis());
-								this.sendMediateRequest(node, "down");
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public void regulateTemp(CrowdData newTempData){
-		long lastChangeTs;
-		if((newTempData.getValue()+getRoomAverageValue(newTempData))/2 < CrowdController.getInstance().getRoomAveragePref(newTempData)){
-			for(CrowdNode node : nodesList){
-				if(node.getmNID().substring(0, 2).equals(CrowdController.getInstance().getUser(newTempData.getAccountId()).getOffice())){
-					if(node.getmType() == NodeType.fan){
-						//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-						if(node.getLastChangeTS() == null){
-							lastChangeTs = 0;
-						}else{
-							lastChangeTs = node.getLastChangeTS();
-						}
-						if(System.currentTimeMillis()-lastChangeTs > 300000){
-							node.setLastChangeTS(System.currentTimeMillis());
-							this.sendMediateRequest(node,"off");
-						}
-					}
-					if(node.getmType() == NodeType.heater){
-						//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-						if(node.getLastChangeTS() == null){
-							lastChangeTs = 0;
-						}else{
-							lastChangeTs = node.getLastChangeTS();
-						}
-						if(System.currentTimeMillis()-lastChangeTs > 300000){
-							node.setLastChangeTS(System.currentTimeMillis());
-							this.sendMediateRequest(node, "on");
-						}
-					}
-				}
-			}
-		}else{
-			for(CrowdNode node : nodesList){
-				if(node.getmNID().substring(0, 2).equals(CrowdController.getInstance().getUser(newTempData.getAccountId()).getOffice())){
-					if(node.getmType() == NodeType.fan){
-						//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-						if(node.getLastChangeTS() == null){
-							lastChangeTs = 0;
-						}else{
-							lastChangeTs = node.getLastChangeTS();
-						}
-						if(System.currentTimeMillis()-lastChangeTs > 300000){
-							node.setLastChangeTS(System.currentTimeMillis());
-							this.sendMediateRequest(node, "on");
-						}
-					}
-					if(node.getmType() == NodeType.heater){
-						//Change the node status only if it haven't been changed in the last 5 minutes to avoid annoying the users
-						if(node.getLastChangeTS() == null){
-							lastChangeTs = 0;
-						}else{
-							lastChangeTs = node.getLastChangeTS();
-						}
-						if(System.currentTimeMillis()-lastChangeTs > 300000){
-							node.setLastChangeTS(System.currentTimeMillis());
-							this.sendMediateRequest(node, "off");
-						}
-					}
-				}
-			}
-		}
-	}
-	
+	/**
+	 * Send a mediate request to turn a node on or off
+	 * @param node
+	 * @param status
+	 */
 	public void sendMediateRequest(CrowdNode node, String status){
 		String request_url = url+"/mediate?service="+node.getmNID()+"&resource="+node.getmType()+"&status="+status;
 		System.out.println(request_url);
@@ -212,6 +93,9 @@ public class CrowdNodesManager extends TimerTask{
 		}
 	}
 	
+	/**
+	 * Fetch nodes from the server url
+	 */
 	public void fetchNodes(){
 		String request_url = url+"/service/type/xml_rspec";
 		StringBuffer response = null;
@@ -237,6 +121,10 @@ public class CrowdNodesManager extends TimerTask{
 		this.parseNodes(response.toString());
 	}
 	
+	/**
+	 * Create a new list of nodes from the xml response of the server
+	 * @param response
+	 */
 	public void parseNodes(String response){
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -261,6 +149,9 @@ public class CrowdNodesManager extends TimerTask{
 		}
 	}
 	
+	/**
+	 * Fetch all the values reported by the fixes nodes from the server url
+	 */
 	public void fetchValues(){
 		String request_url = url+"/sensorvalues";
 		StringBuffer response = null;
@@ -286,6 +177,10 @@ public class CrowdNodesManager extends TimerTask{
 		this.parseValues(response.toString());
 	}
 	
+	/**
+	 * Parse the nodes values from the JSON response of the server
+	 * @param response
+	 */
 	public void parseValues(String response){
 		JSONObject valuesJSON = (JSONObject) JSONValue.parse(response);
 		System.out.println(valuesJSON.toString());
@@ -298,6 +193,11 @@ public class CrowdNodesManager extends TimerTask{
 		}
 	}
 	
+	/**
+	 * Get the room average value for the data type passsed in parameter in the room of the data passed in parameter
+	 * @param data
+	 * @return
+	 */
 	public float getRoomAverageValue(CrowdData data){
 		float averageValue = 0;
 		int nbNodes = 0;
@@ -314,6 +214,10 @@ public class CrowdNodesManager extends TimerTask{
 		return averageValue/nbNodes;
 	}
 	
+	/**
+	 * Get the JSON formatted list of nodes
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public JSONObject getNodesJSON(){
 		JSONObject representation = new JSONObject();
@@ -326,6 +230,10 @@ public class CrowdNodesManager extends TimerTask{
 		return representation;
 	}
 
+	/**
+	 * Add a node to the list of nodes in the manager
+	 * @param node
+	 */
 	public void addNode(CrowdNode node){
 		Boolean nodeExist = false;
         for(CrowdNode currentNode : nodesList){
@@ -339,6 +247,11 @@ public class CrowdNodesManager extends TimerTask{
         }
 	}
 	
+	/**
+	 * Get the node with the NID passed in parameter
+	 * @param NID
+	 * @return
+	 */
 	public CrowdNode getNode(String NID){
 		for(CrowdNode node: nodesList){
 			if(node.getmNID().equals(NID)){
@@ -347,4 +260,17 @@ public class CrowdNodesManager extends TimerTask{
 		}
 		return null;
 	}
+	
+	public ArrayList<CrowdNode> getNodesList(){
+		return nodesList;
+	}
+	
+	public static CrowdNodesRegulator getNodesRegulator() {
+		return nodesRegulator;
+	}
+
+	public static void setNodesRegulator(CrowdNodesRegulator nodesRegulator) {
+		CrowdNodesManager.nodesRegulator = nodesRegulator;
+	}
+
 }

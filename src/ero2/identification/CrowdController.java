@@ -17,7 +17,6 @@ public class CrowdController {
 	
 	public CrowdController(){
 		this.users = new ArrayList<CrowdUser>();
-		//TODO: CHANGE TESTING URL
 		this.nodesManager = CrowdNodesManager.getInstance();
 	}
 	
@@ -75,9 +74,9 @@ public class CrowdController {
 		}
 		//Light and temperature automation
 		if(lastData.getDataType().equals("LIGHT")){
-			nodesManager.regulateLight(lastData);
+			nodesManager.getNodesRegulator().regulateLight(lastData);
 		}else if(lastData.getDataType().equals("TEMPERATURE")){
-			nodesManager.regulateTemp(lastData);
+			nodesManager.getNodesRegulator().regulateTemp(lastData);
 		}
 	}
 	
