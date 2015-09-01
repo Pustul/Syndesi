@@ -27,22 +27,22 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class CrowdNodesManager extends TimerTask{
-	private static CrowdNodesManager instance;
+public class CrowdNodesController extends TimerTask{
+	private static CrowdNodesController instance;
 	private static CrowdNodesRegulator nodesRegulator;
 	private ArrayList<CrowdNode> nodesList;
 	private String url = "http://129.194.70.52:8111/ero2proxy";
 	
-	public CrowdNodesManager(){
+	public CrowdNodesController(){
 		this.nodesRegulator = CrowdNodesRegulator.getInstance(this);
 		this.nodesList = new ArrayList<>();
 		//Update the nodes list every 30 minutes
 		new Timer().schedule(this, 0, 1800000);
 	}
 	
-	public static synchronized CrowdNodesManager getInstance(){
+	public static synchronized CrowdNodesController getInstance(){
 		if(instance == null){
-			instance = new CrowdNodesManager();
+			instance = new CrowdNodesController();
 		}
 		return instance;
 	}
@@ -270,7 +270,7 @@ public class CrowdNodesManager extends TimerTask{
 	}
 
 	public static void setNodesRegulator(CrowdNodesRegulator nodesRegulator) {
-		CrowdNodesManager.nodesRegulator = nodesRegulator;
+		CrowdNodesController.nodesRegulator = nodesRegulator;
 	}
 
 }

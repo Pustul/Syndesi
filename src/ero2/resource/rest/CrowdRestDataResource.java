@@ -13,7 +13,7 @@ import org.restlet.resource.ServerResource;
 
 import ero2.identification.CrowdController;
 import ero2.identification.CrowdData;
-import ero2.identification.CrowdNodesManager;
+import ero2.identification.CrowdNodesController;
 import ero2.identification.CrowdUser;
 
 /**
@@ -35,12 +35,12 @@ public class CrowdRestDataResource extends ServerResource {
 		if(((String)getRequest().getAttributes().get("type")) != null && ((String)getRequest().getAttributes().get("type")).equals("mobile")){
 			return crowdController.getDataJSON().toJSONString();
 		}else if(((String)getRequest().getAttributes().get("type")) != null && ((String)getRequest().getAttributes().get("type")).equals("fixed")){
-			return CrowdNodesManager.getInstance().getNodesJSON().toJSONString();
+			return CrowdNodesController.getInstance().getNodesJSON().toJSONString();
 		}else{
 			JSONObject dataJSON = new JSONObject();
 			JSONArray dataArray = new JSONArray();
 			dataArray.add(crowdController.getDataJSON());
-			dataArray.add(CrowdNodesManager.getInstance().getNodesJSON());
+			dataArray.add(CrowdNodesController.getInstance().getNodesJSON());
 			dataJSON.put("data", dataArray);
 			return dataJSON.toJSONString();
 		}

@@ -2,13 +2,13 @@ package ero2.identification;
 
 public class CrowdNodesRegulator {
 	private static CrowdNodesRegulator instance;
-	private static CrowdNodesManager nodesManager;
+	private static CrowdNodesController nodesManager;
 	
-	public CrowdNodesRegulator(CrowdNodesManager nodesManager){
+	public CrowdNodesRegulator(CrowdNodesController nodesManager){
 		this.nodesManager = nodesManager;
 	}
 	
-	public static synchronized CrowdNodesRegulator getInstance(CrowdNodesManager nodesManager){
+	public static synchronized CrowdNodesRegulator getInstance(CrowdNodesController nodesManager){
 		if(instance == null){
 			instance = new CrowdNodesRegulator(nodesManager);
 		}

@@ -12,12 +12,12 @@ import org.json.simple.JSONObject;
  */
 public class CrowdController {
 	private static CrowdController instance;
-	private static CrowdNodesManager nodesManager;
+	private static CrowdNodesController nodesManager;
 	private ArrayList<CrowdUser> users;
 	
 	public CrowdController(){
 		this.users = new ArrayList<CrowdUser>();
-		this.nodesManager = CrowdNodesManager.getInstance();
+		this.nodesManager = CrowdNodesController.getInstance();
 	}
 	
 	public static synchronized CrowdController getInstance(){
