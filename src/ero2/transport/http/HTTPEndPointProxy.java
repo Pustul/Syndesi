@@ -27,7 +27,7 @@ public class HTTPEndPointProxy extends Application {
         router.attach("/service/type/xml_rspec", ErO2RestXMLResource.class);
         // Returns only the values of sensors(luminance, temperature)
         router.attach("/sensorvalues", ErO2RestSensValues.class);
-        //Return last values of mobile sensors
+        //Return last values from sensors
         router.attach("/crowddata", CrowdRestDataResource.class);
         router.attach("/crowddata/{type}", CrowdRestDataResource.class);
         //Manage crowd users

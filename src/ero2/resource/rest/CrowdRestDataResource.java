@@ -46,12 +46,15 @@ public class CrowdRestDataResource extends ServerResource {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Post()
 	public String addData(String request) throws IOException, ParseException {
 		JSONObject dataJSON = (JSONObject) JSONValue.parse(request);
 		CrowdData newData = new CrowdData((String) dataJSON.get("mAccountId"), ((Number) dataJSON.get("mData")).floatValue(), (String)dataJSON.get("mDataType"));
 		crowdController.setLastData(newData);;
-		return dataJSON.toJSONString();
+		JSONObject response = new JSONObject();
+		response.put("data upload", "success");
+		return response.toJSONString();
 	}
 	
 }

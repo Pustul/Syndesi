@@ -45,7 +45,9 @@ public class CrowdRestUserResource extends ServerResource {
 		}
 		CrowdUser newUser = new CrowdUser((String)userJSON.get("mId"), getRequest().getClientInfo().getAddress(), getRequest().getClientInfo().getAgent(), (String)userJSON.get("mName"), (String)userJSON.get("mSurname"), (String)userJSON.get("mOffice"), ((Number)userJSON.get("mTargetLight")).intValue(), ((Number)userJSON.get("mTargetTemp")).intValue(), availableSensors);
 		crowdController.getUsers().add(newUser);
-		return userJSON.toJSONString();
+		JSONObject response = new JSONObject();
+		response.put("user update", "success");
+		return response.toJSONString();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -70,7 +72,9 @@ public class CrowdRestUserResource extends ServerResource {
 		}else{
 			users.add(updatedUser);
 		}
-		return userJSON.toJSONString();
+		JSONObject response = new JSONObject();
+		response.put("user upload", "success");
+		return response.toJSONString();
 	}
 	
 }

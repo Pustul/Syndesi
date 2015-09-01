@@ -31,7 +31,7 @@ public class CrowdNode {
 			representation.put("timestamp", new SimpleDateFormat("dd.MM.yyyy-HH:mm:ss").format(new Date(LastChangeTS)));
 		}
 		else{
-			representation.put("timestamp", 0);
+			representation.put("timestamp", new SimpleDateFormat("dd.MM.yyyy-HH:mm:ss").format(new Date(System.currentTimeMillis())));
 		}
 		return representation;
 	}
